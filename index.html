@@ -12,6 +12,7 @@
         <div id="map"></div>
         <button id="loc" onclick = "StartWatchingLoc()">O</button>
         <script>
+            var check = 0;
             const mapOptions = {
             center:[23.769168, 90.373054],
             zoom:10
@@ -26,8 +27,14 @@
                     Watch:true,
                     maxZoom:19
                 };
-                map.locate(locationOptions);
+                if(check==0){
+                    map.locate(locationOptions);
+                    check = 1;
+                }
             }
+
+            
+            
             function onLocationFound(e){
                 var radius = e.accuracy;
                 L.marker(e.latlng).addTo(map);
