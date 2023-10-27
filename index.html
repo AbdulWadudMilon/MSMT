@@ -10,9 +10,10 @@
     </head>
     <body>
         <div id="map"></div>
-        <button id="loc" onclick = "StartWatchingLoc()">OO</button>
+        <button id="loc" onclick = "StartWatchingLoc()">O</button>
         <script>
             var check = 0;
+            
             const mapOptions = {
             center:[23.769168, 90.373054],
             zoom:10
@@ -34,12 +35,21 @@
                 }
             }
 
-            
+            var ErrorCircle;
+            var PositionMarker;
+            var check1 = 0;
             
             function onLocationFound(e){
                 var radius = e.accuracy;
-                L.marker(e.latlng).addTo(map);
-                L.circle(e.latlng,radius).addTo(map);
+                if(check1==1){
+                    ErrorCircle.removeFrom(map);
+                    PositionMarker.removeFrom(map);
+                }
+                ErrorCircle = L.circle(e.latlng,radius, {color:'red'});
+                ErrorCircle.addTo(map);
+                PositionMarker = L.marker(e.latlng);
+                PositionMarker.addTo(map);
+                check1 = 1;
             }
             map.on('locationfound', onLocationFound);
             function onLocationError(e){
