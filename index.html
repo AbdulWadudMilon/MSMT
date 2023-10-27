@@ -1,0 +1,48 @@
+<!DOCKTYPE html>
+<html>
+    <head>
+        <title>Map of Dhaka City</title>
+        <meta name="viewport" content ="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="Location.css">
+        </style>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    </head>
+    <body>
+        <div id="map"></div>
+        <button id="loc" onclick = "StartWatchingLoc()">O</button>
+        <script>
+            const mapOptions = {
+            center:[23.769168, 90.373054],
+            zoom:10
+            }
+            const map = new L.map('map', mapOptions);
+            const layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+            map.addLayer(layer);
+            map.fitWorld();
+            function StartWatchingLoc(){
+                const locationOptions = {
+                    setView:true,
+                    Watch:true,
+                    maxZoom:19
+                };
+                map.locate(locationOptions);
+            }
+            function onLocationFound(e){
+                var radius = e.accuracy;
+                L.marker(e.latlng).addTo(map);
+                L.circle(e.latlng,radius).addTo(map);
+            }
+            map.on('locationfound', onLocationFound);
+            function onLocationError(e){
+                alert(e.message);
+            }
+            map.on('locationerror',onLocationError);
+
+            const marker = L.marker([23.769168, 90.373054]);
+            marker.bindPopup("PDSD Project").openPopup();
+            marker.addTo(map);
+        </script>
+        
+    </body>
+</html>
